@@ -32,22 +32,17 @@ import logging
 import signal # Signal Handling Stuff
 import sys # System Stuff
 
-from os.path import expanduser
-from pathlib import Path
+from configutils import configfile, configdirectory, isDirectory, pathExists, canAccessForWriting
 
-# Script defaults
+config_path = configfile()
 
-home = expanduser("~")
-config_dir = home + '/.lncm'
-config_path = config_dir + '/nodebackup.toml'
-
-if not Path(config_dir).is_dir():
+if not isDirectory(configdirectory()):
     print("Directory .lncm doesn't exist")
     sys.exit() # TODO: create this and don't exit
 else:
     print("Directory .lncm exists")
 
-if not Path(config_path).exists():
+if not pathExists(configfile()):
     print("Config file does not exist")
     sys.exit()
 else:
@@ -95,16 +90,6 @@ else:
 logging.basicConfig(filename=configuration['logfile'], level=logging.INFO, format='%(asctime)s [%(levelname)s]: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
 
-# Handle and exit
-def handler_stop_signals(signum, frame):
-    logging.info("Caught Terminate signal - exiting")
-    logging.debug("Signal %d received" % signum)
-    if Path(pidfile).exists():
-        logging.info("Cleaning up PID file")
-        os.unlink(pidfile)
-    sys.exit(0)
-
-
 if configuration['apikeys'][providername] is None:
     print("No API key for " + providername + " is defined")
     sys.exit()
@@ -118,6 +103,7 @@ logging.info('Dropbox connection initialized')
 dbx = dropbox.Dropbox(configuration['apikeys'][providername])
 
 # Add handlers
+from stophandler import handler_stop_signals
 signal.signal(signal.SIGTERM, handler_stop_signals)
 signal.signal(signal.SIGHUP, handler_stop_signals)
 signal.signal(signal.SIGINT, handler_stop_signals)
@@ -144,7 +130,7 @@ def dropboxbackup(filename, host='default'):
 
 def watch(fileparam):
     while True:
-        if Path(fileparam).exists():
+        if pathExists(fileparam):
             i = inotify.adapters.Inotify()
             i.add_watch(fileparam)
             logging.info("Watching file " + fileparam + " for changes")
@@ -168,7 +154,7 @@ def startdaemon():
             logging.info("Running process as PID: %d" % pid)
             print('Running process as PID %d' % pid)
             # Check if writing is possible to the specified pid file
-            if os.access(os.path.dirname(os.path.realpath(pidfile)), os.W_OK):
+            if canAccessForWriting(pidfile):
                 print('Using %s as pidfile' % pidfile)
                 logging.info('Using %s as pidfile' % pidfile)
                 with open(pidfile, 'w') as pidfilepointer:
