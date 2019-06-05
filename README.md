@@ -42,6 +42,6 @@ sudo pip3 uninstall dist/nodebackup-X.X.X-py3-none-any.whl
 
 ## Todo / What's Missing
 
-[ ] Support for Amazon S3
-[ ] Connect to LND and backup each channel individually and grab the text backup as well
-[ ] Robustness (maybe have the script handle SIGHUP to reload configuration file)
+- [ ] Support for Amazon S3
+- [ ] Connect to LND and backup each channel individually and grab the text backup as well
+- [ ] Robustness (maybe have the script handle SIGHUP to reload configuration file)
