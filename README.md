@@ -25,7 +25,7 @@ dropbox = "APIKEYHERE"
 ### Installing
 
 ```
-pip install lndnodebackup
+sudo /usr/bin/python3 -m pip install lndnodebackup
 ```
 
 ### Running
@@ -36,7 +36,7 @@ After installing the utility simply invoke
 lndnodebackup
 ```
 
-This will run as a background task.
+This will run as a background task, which you can kill based on the PID.
 
 ## Building
 
