@@ -18,7 +18,7 @@ from setuptools import setup
 
 setup(
     name="lndnodebackup",
-    version="0.0.1",
+    version="0.0.2",
     packages=["nodebackup"],
     install_requires=["toml", "dropbox"],
     entry_points={"console_scripts": ["lndnodebackup = nodebackup.nodebackup:main"]},
@@ -26,7 +26,7 @@ setup(
     zip_safe=True,
     author="nolim1t",
     author_email="hello@nolim1t.co",
-    description="bitcoin lightning node (LND) backup tool",
+    description="bitcoin lightning node (LND) backup daemon service",
     license="Apache 2.0",
     keywords="bitcoin lightning node backup",
     url="https://gitlab.com/nolim1t/nodebackup"
