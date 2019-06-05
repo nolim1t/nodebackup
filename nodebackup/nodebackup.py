@@ -32,27 +32,9 @@ import logging
 import signal # Signal Handling Stuff
 import sys # System Stuff
 
-from configutils import configfile, configdirectory, isDirectory, pathExists, canAccessForWriting
-
-config_path = configfile()
-
-if not isDirectory(configdirectory()):
-    print("Directory .lncm doesn't exist")
-    sys.exit() # TODO: create this and don't exit
-else:
-    print("Directory .lncm exists")
-
-if not pathExists(configfile()):
-    print("Config file does not exist")
-    sys.exit()
-else:
-    print("Checking config")
-
-try:
-    configuration = toml.load(config_path, _dict=dict)
-except:
-    print("Failed to load config")
-    sys.exit(1)
+# Configuration
+from readconfig import initconfig
+configuration = initconfig()
 
 if not 'logfile' in configuration:
     print("no logfile path defined!")
@@ -129,24 +111,26 @@ def dropboxbackup(filename, host='default'):
                 logging.warn("Generic system error: " + err)                
 
 def watch(fileparam):
-    while True:
-        if pathExists(fileparam):
-            i = inotify.adapters.Inotify()
-            i.add_watch(fileparam)
-            logging.info("Watching file " + fileparam + " for changes")
-            for event in i.event_gen(yield_nones=False):
-                (_, type_names, path, filename) = event
-                logging.debug("File changed with flag: " + str(type_names))
-                logged_debug_watch = "Path: %s Filename %s" % (path, filename)
-                logging.debug(logged_debug_watch)
-                if type_names == ['IN_MODIFY']:
-                    logging.info('File ' + fileparam + ' Changed.. uploading to defined cloud services')
-                    dropboxbackup(filename=fileparam, host=nodename)
-        else:
-            logging.warn("File doesn't exist.. waiting for 10 minutes before checking again")
-            time.sleep(600)      
+    from configutils import canAccessForWriting, pathExists
+    
+    if pathExists(fileparam):
+        i = inotify.adapters.Inotify()
+        i.add_watch(fileparam)
+        logging.info("Watching file " + fileparam + " for changes")
+        for event in i.event_gen(yield_nones=False):
+            (_, type_names, path, filename) = event
+            logging.debug("File changed with flag: " + str(type_names))
+            logged_debug_watch = "Path: %s Filename %s" % (path, filename)
+            logging.debug(logged_debug_watch)
+            if type_names == ['IN_MODIFY']:
+                logging.info('File ' + fileparam + ' Changed.. uploading to defined cloud services')
+                dropboxbackup(filename=fileparam, host=nodename)
+    else:
+        logging.warn("File doesn't exist.. waiting for 10 minutes before checking again")
+        time.sleep(600)      
 
 def startdaemon():
+    from configutils import canAccessForWriting
     # Forking stuff
     try:
         pid = os.fork()
@@ -164,8 +148,9 @@ def startdaemon():
                 logging.warn('Cannot write to %s' % pidfile)
             os._exit(0)
     except:
+        exception = sys.exc_info()[0]
         logging.fatal("Unable to fork")
-        print('Unable to fork')
+        print("Unable to fork (%s)" % exception)
         os._exit(1)
     
     watch(backupfile)
