@@ -27,7 +27,7 @@ dropbox = "APIKEYHERE"
 After installing the utility simply invoke
 
 ```bash
-nodebackup
+lndnodebackup
 ```
 
 This will run as a background task.

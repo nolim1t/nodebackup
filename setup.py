@@ -17,11 +17,11 @@
 from setuptools import setup
 
 setup(
-    name="nodebackup",
+    name="lndnodebackup",
     version="0.0.1",
-    packages=["nodebackup-nolim1t"],
+    packages=["nodebackup"],
     install_requires=["toml", "dropbox"],
-    entry_points={"console_scripts": ["nodebackup = nodebackup.nodebackup:main"]},
+    entry_points={"console_scripts": ["lndnodebackup = nodebackup.nodebackup:main"]},
 
     zip_safe=True,
     author="nolim1t",
