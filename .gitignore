@@ -2,3 +2,4 @@ build/
 dist/
 *.pyc
 nodebackup.egg-info/
+lndnodebackup.egg-info/
