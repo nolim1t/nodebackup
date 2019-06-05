@@ -14,18 +14,15 @@
    limitations under the License.
 '''
 
-# File notify libraries
+# File notify libraries (TODO: move this to its own area)
 import inotify.adapters
 
-# Dropbox Libraries
+# Dropbox Libraries (TODO: move this to its own area)
 import dropbox
 from dropbox.files import WriteMode
 from dropbox.exceptions import ApiError, AuthError
 
-# toml libraries
-import toml
-
-# System libraries
+# System libraries (TODO: Move as much stuff to its own area)
 import os
 import time
 import logging
