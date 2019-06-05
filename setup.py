@@ -19,7 +19,7 @@ from setuptools import setup
 setup(
     name="nodebackup",
     version="0.0.1",
-    packages=["nodebackup"],
+    packages=["nodebackup-nolim1t"],
     install_requires=["toml", "dropbox"],
     entry_points={"console_scripts": ["nodebackup = nodebackup.nodebackup:main"]},
 
