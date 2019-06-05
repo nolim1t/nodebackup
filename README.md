@@ -24,7 +24,8 @@ dropbox = "APIKEYHERE"
 
 ### Installing
 
-```
+```bash
+sudo /usr/bin/python3 -m pip install inotify
 sudo /usr/bin/python3 -m pip install lndnodebackup
 ```
 
