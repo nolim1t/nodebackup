@@ -29,9 +29,5 @@ setup(
     description="bitcoin lightning node (LND) backup tool",
     license="Apache 2.0",
     keywords="bitcoin lightning node backup",
-    url="https://gitlab.com/nolim1t/nodebackup",
-    classifiers=[
-        "License :: OSI Approved :: Apache 2.0 License",
-        "Operating System :: UNIX Systems",        
-    ]
-)
+    url="https://gitlab.com/nolim1t/nodebackup"
+ )

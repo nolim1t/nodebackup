@@ -22,6 +22,12 @@ dropbox = "APIKEYHERE"
 
 ```
 
+### Installing
+
+```
+pip install -i https://test.pypi.org/simple/ lndnodebackup
+```
+
 ### Running
 
 After installing the utility simply invoke
@@ -37,7 +43,14 @@ This will run as a background task.
 ```bash
 sudo python3 -m pip install setuptools wheel twine
 python3 setup.py bdist_wheel
-sudo pip3 uninstall dist/nodebackup-X.X.X-py3-none-any.whl
+sudo pip3 install dist/nodebackup-X.X.X-py3-none-any.whl
+```
+
+### Distributing
+
+```
+python3 setup.py sdist bdist_wheel
+python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 ```
 
 ## Todo / What's Missing
