@@ -151,6 +151,8 @@ def watch(fileparam):
             for event in i.event_gen(yield_nones=False):
                 (_, type_names, path, filename) = event
                 logging.debug("File changed with flag: " + str(type_names))
+                logged_debug_watch = "Path: %s Filename %s" % (path, filename)
+                logging.debug(logged_debug_watch)
                 if type_names == ['IN_MODIFY']:
                     logging.info('File ' + fileparam + ' Changed.. uploading to defined cloud services')
                     dropboxbackup(filename=fileparam, host=nodename)
