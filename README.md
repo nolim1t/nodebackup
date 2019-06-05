@@ -25,7 +25,7 @@ dropbox = "APIKEYHERE"
 ### Installing
 
 ```
-pip install -i https://test.pypi.org/simple/ lndnodebackup
+pip install lndnodebackup
 ```
 
 ### Running
@@ -48,9 +48,12 @@ sudo pip3 install dist/nodebackup-X.X.X-py3-none-any.whl
 
 ### Distributing
 
-```
+```bash
 python3 setup.py sdist bdist_wheel
+# Test
 python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+# production
+python3 -m twine upload dist/* 
 ```
 
 ## Todo / What's Missing
