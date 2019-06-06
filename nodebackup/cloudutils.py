@@ -25,6 +25,9 @@ def dropboxbackup(filename):
     if configuration['apikeys'][providername] is None:
         print("No API key for " + providername + " is defined")
         sys.exit()        
+
+    # Define dropbox connection
+    logging.info('Dropbox connection initialized')
    
     # Start Dropbox upload
     dbx = dropbox.Dropbox(configuration['apikeys'][providername])

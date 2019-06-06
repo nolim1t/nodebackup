@@ -26,17 +26,18 @@ import sys # System Stuff
 from configutils import readconfig
 configuration = readconfig()
 
-# Check for logfile
+# Check for logfile (Used for general logging. This needs to be in entrypoint)
 if not 'logfile' in configuration:
     print("no logfile path defined!")
     sys.exit(1)
-# Check pidfile
+
+# Check pidfile (used for starting up the daemon. To go with Daemon)
 if not 'pidfile' in configuration:
     pidfile = "/var/run/nodebackup.pid"
 else:
     pidfile = configuration['pidfile']
 
-# Check backup file
+# Check backup file (Used for watching. To go with Daemon)
 if not 'backupfile' in configuration:
     # Default path
     backupfile = "/media/important/important/lnd/data/chain/bitcoin/mainnet/channel.backup"
@@ -44,14 +45,9 @@ else:
     # Define the location of the backup in config
     backupfile = configuration['backupfile']
 
-# Set up logging
+# Set up logging (To go with entrypoint)
 logging.basicConfig(filename=configuration['logfile'], level=logging.INFO, format='%(asctime)s [%(levelname)s]: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
-
-# # See <https://blogs.dropbox.com/developers/2014/05/generate-an-access-token-for-your-own-account/>
-# Define dropbox connection
-logging.info('Started daemon')
-logging.info('Dropbox connection initialized')
 
 # Add handlers
 from stophandler import handler_stop_signals
@@ -85,6 +81,8 @@ def watch(fileparam):
 
 def startdaemon():
     from configutils import canAccessForWriting
+    
+    logging.info('Started daemon')    
     # Forking stuff
     try:
         pid = os.fork()
