@@ -14,11 +14,6 @@
    limitations under the License.
 '''
 
-# File notify libraries (TODO: move this to its own area)
-import inotify.adapters
-
-
-from dropboxbackup import dropboxbackup
 
 # System libraries (TODO: Move as much stuff to its own area)
 import os
@@ -66,6 +61,10 @@ signal.signal(signal.SIGINT, handler_stop_signals)
 signal.signal(signal.SIGQUIT, handler_stop_signals)               
 
 def watch(fileparam):
+    # File notify libraries
+    import inotify.adapters    
+    # Cloud backup libraries
+    from cloudbackup import dropboxbackup    
     from configutils import canAccessForWriting, pathExists
     
     if pathExists(fileparam):
