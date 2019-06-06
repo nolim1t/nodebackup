@@ -37,5 +37,11 @@ def isDirectory(thepath):
 def canAccessForWriting(thepath):
     return os.access(os.path.dirname(os.path.realpath(thepath)), os.W_OK)
 
+def canAccessForReading(thepath):
+    return os.access(os.path.dirname(os.path.realpath(thepath)), os.R_OK)
+
+def canAccessConfigFile():
+    return canAccessForReading(configfile())
+
 if __name__ == "__main__":
     print("This file is not meant to be run directly")

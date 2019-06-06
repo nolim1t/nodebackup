@@ -15,19 +15,19 @@
 '''
 
 import sys
-from configutils import configfile, configdirectory, isDirectory, pathExists
+from configutils import configfile, configdirectory, isDirectory, pathExists, canAccessConfigFile
 
 def initconfig():
     import toml
 
     if not isDirectory(configdirectory()):
         print("Directory .lncm doesn't exist")
-        sys.exit()
+        sys.exit(1)
 
     # Check if config file exists
-    if not pathExists(configfile()):
-        print("Config file does not exist")
-        sys.exit()
+    if not canAccessConfigFile():
+        print("Config file can not be accessed")
+        sys.exit(1)
 
 
     try:
