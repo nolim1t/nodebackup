@@ -23,15 +23,12 @@ def initconfig():
     if not isDirectory(configdirectory()):
         print("Directory .lncm doesn't exist")
         sys.exit()
-    else:
-        print("Directory .lncm exists")
 
     # Check if config file exists
     if not pathExists(configfile()):
         print("Config file does not exist")
         sys.exit()
-    else:
-        print("Checking config")
+
 
     try:
         return toml.load(configfile(), _dict=dict)

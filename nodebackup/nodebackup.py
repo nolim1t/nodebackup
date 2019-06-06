@@ -17,10 +17,8 @@
 # File notify libraries (TODO: move this to its own area)
 import inotify.adapters
 
-# Dropbox Libraries (TODO: move this to its own area)
-import dropbox
-from dropbox.files import WriteMode
-from dropbox.exceptions import ApiError, AuthError
+
+from dropboxbackup import dropboxbackup
 
 # System libraries (TODO: Move as much stuff to its own area)
 import os
@@ -29,28 +27,14 @@ import logging
 import signal # Signal Handling Stuff
 import sys # System Stuff
 
-# Configuration
+# Configuration for backupfile, logfile and pidfile
 from readconfig import initconfig
 configuration = initconfig()
 
+# Check for logfile
 if not 'logfile' in configuration:
     print("no logfile path defined!")
     sys.exit(1)
-
-if not 'provider' in configuration:
-    print("No provider = 'providername' defined in toml root")
-    sys.exit(1)
-
-if not 'apikeys' in configuration:
-    print("No section called [apikeys] in configuration file, please define this")
-    sys.exit(1)
-
-if not 'nodename' in configuration:
-    print("'nodename' is not defined in toml root")
-    sys.exit(1)
-
-providername = configuration['provider']
-nodename = configuration['nodename']
 # Check pidfile
 if not 'pidfile' in configuration:
     pidfile = "/var/run/nodebackup.pid"
@@ -69,43 +53,17 @@ else:
 logging.basicConfig(filename=configuration['logfile'], level=logging.INFO, format='%(asctime)s [%(levelname)s]: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
 
-if configuration['apikeys'][providername] is None:
-    print("No API key for " + providername + " is defined")
-    sys.exit()
-
-
-
 # # See <https://blogs.dropbox.com/developers/2014/05/generate-an-access-token-for-your-own-account/>
 # Define dropbox connection
 logging.info('Started daemon')
 logging.info('Dropbox connection initialized')
-dbx = dropbox.Dropbox(configuration['apikeys'][providername])
 
 # Add handlers
 from stophandler import handler_stop_signals
 signal.signal(signal.SIGTERM, handler_stop_signals)
 signal.signal(signal.SIGHUP, handler_stop_signals)
 signal.signal(signal.SIGINT, handler_stop_signals)
-signal.signal(signal.SIGQUIT, handler_stop_signals)
-
-def dropboxbackup(filename, host='default'):
-    logging.info('Dropbox backup started')
-    filearray = os.path.split(filename)
-    pathname = '/lncm/channel_backups/' + host + '/' + filearray[len(filearray) - 1]
-    with open(filename, 'rb') as f:
-        logging.info("Uploading " + filename + " to dropbox " + pathname)
-# Actually do the upload now
-        try:
-            dbx.files_upload(f.read(), pathname, mode=WriteMode('overwrite'))
-        except ApiError as err:
-            if (err.error.is_path() and
-                err.error.get_path().reason.is_insufficient_space()):
-                logging.fatal("Not enough space on dropbox")
-                sys.exit("Not enough space on dropbox")
-            elif err.user_message_text:
-                logging.warn("Dropbox system error: " + err.user_message_text)
-            else:
-                logging.warn("Generic system error: " + err)                
+signal.signal(signal.SIGQUIT, handler_stop_signals)               
 
 def watch(fileparam):
     from configutils import canAccessForWriting, pathExists
@@ -121,7 +79,7 @@ def watch(fileparam):
             logging.debug(logged_debug_watch)
             if type_names == ['IN_MODIFY']:
                 logging.info('File ' + fileparam + ' Changed.. uploading to defined cloud services')
-                dropboxbackup(filename=fileparam, host=nodename)
+                dropboxbackup(filename=fileparam)
     else:
         logging.warn("File doesn't exist.. waiting for 10 minutes before checking again")
         time.sleep(600)      
