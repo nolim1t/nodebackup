@@ -15,11 +15,8 @@
 '''
 
 
-# System libraries (TODO: Move as much stuff to its own area)
-import os
-import logging
-import sys # System Stuff
-
+import os, sys, logging
+# Internal
 from configutils import readconfig
 from daemon import  startdaemon
 
@@ -28,8 +25,7 @@ configuration = readconfig()
 if not 'logfile' in configuration:
     print("no logfile path defined!")
     sys.exit(1)
-
-logging.basicConfig(filename=configuration['logfile'], level=logging.INFO, format='%(asctime)s [%(levelname)s]: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logging.basicConfig(filename=configuration['logfile'], level=logging.DEBUG, format='%(asctime)s [%(levelname)s]: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
 
 # Main entrypoint

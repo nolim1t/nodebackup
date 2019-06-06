@@ -8,9 +8,9 @@ def addsignalhandlers():
     logging.debug("Register signal handlers")
     # Add handlers
     from stophandler import handler_stop_signals
-    signal.signal(signal.SIGTERM, handler_stop_signals)
-    signal.signal(signal.SIGHUP, handler_stop_signals)
-    signal.signal(signal.SIGINT, handler_stop_signals)
+    signal.signal(signal.SIGTERM, handler_stop_signals) # 15
+    signal.signal(signal.SIGHUP, handler_stop_signals) # Signal 1 (TODO: reload configs?)
+    signal.signal(signal.SIGINT, handler_stop_signals) # Signal 2
     signal.signal(signal.SIGQUIT, handler_stop_signals)
     
 def startdaemon():
