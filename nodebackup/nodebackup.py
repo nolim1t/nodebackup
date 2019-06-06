@@ -56,34 +56,12 @@ signal.signal(signal.SIGHUP, handler_stop_signals)
 signal.signal(signal.SIGINT, handler_stop_signals)
 signal.signal(signal.SIGQUIT, handler_stop_signals)               
 
-def watch(fileparam):
-    # File notify libraries
-    import inotify.adapters    
-    # Cloud backup libraries
-    from cloudutils import dropboxbackup    
-    from configutils import canAccessForWriting, pathExists
-    
-    if pathExists(fileparam):
-        i = inotify.adapters.Inotify()
-        i.add_watch(fileparam)
-        logging.info("Watching file " + fileparam + " for changes")
-        for event in i.event_gen(yield_nones=False):
-            (_, type_names, path, filename) = event
-            logging.debug("File changed with flag: " + str(type_names))
-            logged_debug_watch = "Path: %s Filename %s" % (path, filename)
-            logging.debug(logged_debug_watch)
-            if type_names == ['IN_MODIFY']:
-                logging.info('File ' + fileparam + ' Changed.. uploading to defined cloud services')
-                dropboxbackup(filename=fileparam)
-    else:
-        logging.warn("File doesn't exist.. waiting for 10 minutes before checking again")
-        time.sleep(600)      
-
 def startdaemon():
     from configutils import canAccessForWriting
-    
+    from inotifyutils import watchFile
     logging.info('Started daemon')    
-    # Forking stuff
+    
+    # Forking stuff To background
     try:
         pid = os.fork()
         if pid > 0:
@@ -104,8 +82,9 @@ def startdaemon():
         logging.fatal("Unable to fork")
         print("Unable to fork (%s)" % exception)
         os._exit(1)
-    
-    watch(backupfile)
+
+    # Start daemon work
+    watchFile(backupfile)
     
     # End Daemon function
 
