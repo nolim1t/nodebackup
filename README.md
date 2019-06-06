@@ -1,8 +1,8 @@
-# Node Backup Utility
+# LND Node Backup Utility
 
 ## About
 
-This is a utility which allows for backuping up of a lightning node
+This is a utility that runs as a daemon which allows for backuping up of a lightning node.
 
 ## Usage
 

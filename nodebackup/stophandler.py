@@ -14,6 +14,7 @@ def handler_stop_signals(signum, frame):
         if signum == signal.SIGQUIT:
             logging.info("Caught SIGQUIT (%d) signal" % signum) 
         logging.info("Caught Terminate signal - exiting")
+        logging.debug("Really.. this is just a catch-all")
         sys.exit(0)
     
 if __name__ == "__main__":
