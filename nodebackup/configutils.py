@@ -15,6 +15,7 @@
 '''
 
 import os
+import toml
 from os.path import expanduser
 from pathlib import Path
 
@@ -42,6 +43,24 @@ def canAccessForReading(thepath):
 
 def canAccessConfigFile():
     return canAccessForReading(configfile())
+
+def readconfig():
+    if not isDirectory(configdirectory()):
+        print("Directory .lncm doesn't exist")
+        sys.exit(1)
+
+    # Check if config file exists
+    if not canAccessConfigFile():
+        print("Config file can not be accessed")
+        sys.exit(1)
+
+
+    try:
+        return toml.load(configfile(), _dict=dict)
+    except:
+        exception = sys.exc_info()[0]
+        print("Failed to load config (%s)" % exception)
+        sys.exit(1)
 
 if __name__ == "__main__":
     print("This file is not meant to be run directly")

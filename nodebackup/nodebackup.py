@@ -23,8 +23,8 @@ import signal # Signal Handling Stuff
 import sys # System Stuff
 
 # Configuration for backupfile, logfile and pidfile
-from readconfig import initconfig
-configuration = initconfig()
+from configutils import readconfig
+configuration = readconfig()
 
 # Check for logfile
 if not 'logfile' in configuration:
