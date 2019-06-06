@@ -64,7 +64,7 @@ def watch(fileparam):
     # File notify libraries
     import inotify.adapters    
     # Cloud backup libraries
-    from cloudbackup import dropboxbackup    
+    from cloudutils import dropboxbackup    
     from configutils import canAccessForWriting, pathExists
     
     if pathExists(fileparam):
