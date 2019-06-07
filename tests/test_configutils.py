@@ -6,6 +6,10 @@ from nodebackup.nodebackup import configutils
 from os.path import expanduser
 
 class TestConfigUtils(unittest.TestCase):
+    def setUp(self):
+        print("Setup")
+        # set up stub config
+        
     def test_homedir(self):
         self.assertEqual(configutils.homedirectory(), expanduser("~"))
     def test_configdir(self):
