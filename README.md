@@ -51,6 +51,9 @@ sudo pip3 install dist/nodebackup-X.X.X-py3-none-any.whl
 
 ```bash
 pip3 install dist/lndnodebackup-X.X.X-py3-none-any.whl
+# Invoke after running
+~/.local/bin/lndnodebackup start
+# To stop, you can stop the PID with the normal kill signal
 ```
 
 ### Distributing
