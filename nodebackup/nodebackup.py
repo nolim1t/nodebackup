@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
-"""
-Usage: lndnodebackup start
+"""LND Node Backup Utility
+
+Usage:
+  lndnodebackup (start|stop)
 """
 
 import os, sys, logging
@@ -24,6 +26,8 @@ def main():
     args = docopt(__doc__, version="v0.0.2")
     if args["start"]:
         nodebackup.daemon.startdaemon()
+    elif args["stop"]:
+        nodebackup.daemon.stopdaemon()
 
 if __name__ == '__main__':
     main()

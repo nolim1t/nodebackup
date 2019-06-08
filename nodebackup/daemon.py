@@ -3,6 +3,7 @@ import time
 import logging
 import signal # Signal Handling Stuff
 import sys # System Stuff
+from subprocess import call
 
 def addsignalhandlers():
     logging.debug("Register signal handlers")
@@ -12,7 +13,30 @@ def addsignalhandlers():
     signal.signal(signal.SIGHUP, handler_stop_signals) # Signal 1 (TODO: reload configs?)
     signal.signal(signal.SIGINT, handler_stop_signals) # Signal 2
     signal.signal(signal.SIGQUIT, handler_stop_signals)
-    
+
+def stopdaemon():
+    print("Attempting to stop backup service")
+    logging.info("Stopping daemon from commandline")
+    from nodebackup.configutils import canAccessForReading, readconfig
+    configuration = readconfig()
+    if not 'pidfile' in configuration:
+        pidfile = "/var/run/nodebackup.pid"
+    else:
+        pidfile = configuration["pidfile"]
+    if canAccessForReading(pidfile):
+        print("Stopping Service...")
+        file = open(pidfile, "r") 
+        pidnumber = file.read() 
+        logging.debug("Killing off PID ID %s" % pidnumber)        
+        call(["kill", pidnumber])
+        print("Stopped")
+        os._exit(0)
+    else:
+        print("Unable to stop service. Does the PID exist?")
+        logging.error("Unable to kill off process as PID file does not exist for reading!")
+        os._exit(1)
+
+
 def startdaemon():
     from nodebackup.configutils import canAccessForWriting, readconfig
     from nodebackup.inotifyutils import watchFile
