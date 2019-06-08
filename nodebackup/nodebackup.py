@@ -8,7 +8,7 @@ import os, sys, logging
 from docopt import docopt
 
 # Internal
-import nodebackup.lndbackupdaemon
+import nodebackup.daemon
 import nodebackup.configutils
 
 # Check for logfile (Used for general logging. This needs to be in entrypoint)
@@ -23,7 +23,7 @@ logging.basicConfig(filename=configuration['logfile'], level=logging.DEBUG, form
 def main():
     args = docopt(__doc__, version="v0.0.2")
     if args["start"]:
-        nodebackup.lndbackupdaemon.startdaemon()
+        nodebackup.daemon.startdaemon()
 
 if __name__ == '__main__':
     main()
