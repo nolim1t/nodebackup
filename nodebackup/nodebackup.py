@@ -39,8 +39,6 @@ def main():
     args = docopt(__doc__, version="v0.0.2")
     if args["start"]:
         startdaemon()
-    else:
-        print(__doc__)
 
 if __name__ == '__main__':
     main()
