@@ -1,5 +1,6 @@
 build/
 dist/
+.vscode/
 *.pyc
 nodebackup.egg-info/
 lndnodebackup.egg-info/
