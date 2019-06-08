@@ -47,6 +47,12 @@ python3 setup.py bdist_wheel
 sudo pip3 install dist/nodebackup-X.X.X-py3-none-any.whl
 ```
 
+### Local testing
+
+```bash
+pip3 install dist/lndnodebackup-X.X.X-py3-none-any.whl
+```
+
 ### Distributing
 
 ```bash
