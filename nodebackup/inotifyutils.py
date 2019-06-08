@@ -2,10 +2,11 @@
 import inotify.adapters    
 # System
 import logging 
+import time
 
 # Internal
-from cloudutils import dropboxbackup    
-from configutils import canAccessForWriting, pathExists
+from nodebackup.cloudutils import dropboxbackup    
+from nodebackup.configutils import canAccessForWriting, pathExists
 
 def watchFile(fileparam):    
     if pathExists(fileparam):

@@ -7,7 +7,7 @@ import os, logging, sys
 
 
 def dropboxbackup(filename):
-    from configutils import readconfig
+    from nodebackup.configutils import readconfig
     configuration = readconfig()
     if not 'nodename' in configuration:
         print("'nodename' is not defined in toml root")
