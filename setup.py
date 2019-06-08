@@ -18,7 +18,7 @@ from setuptools import setup
 
 setup(
     name="lndnodebackup",
-    version="0.0.2",
+    version="0.0.2-RC1",
     packages=["nodebackup"],
     install_requires=["toml", "dropbox"],
     entry_points={"console_scripts": ["lndnodebackup = nodebackup.nodebackup:main"]},
