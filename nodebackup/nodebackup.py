@@ -1,3 +1,7 @@
+"""
+Usage: lndnodebackup start
+"""
+
 '''
    Copyright 2019 nolim1t.co
 
@@ -16,6 +20,8 @@
 
 
 import os, sys, logging
+from docopt import docopt
+
 # Internal
 from configutils import readconfig
 from daemon import  startdaemon
@@ -30,7 +36,11 @@ logging.basicConfig(filename=configuration['logfile'], level=logging.DEBUG, form
 
 # Main entrypoint
 def main():
-    startdaemon()
+    args = docopt(__doc__, version="v0.0.2")
+    if args["start"]:
+        startdaemon()
+    else:
+        print(__doc__)
 
 if __name__ == '__main__':
     main()
