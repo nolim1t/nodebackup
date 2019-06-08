@@ -22,6 +22,22 @@ dropbox = "APIKEYHERE"
 
 ```
 
+### Triggering channel backups (LND)
+
+So you would like to see it work?
+
+#### LNCM Install
+
+```bash
+docker exec -it compose_lnd_1 lncli exportchanbackup --all --output_file /root/.lnd/data/chain/bitcoin/mainnet/channel.backup
+```
+
+#### General LND Install
+
+```bash
+lncli exportchanbackup --all --output_file /root/.lnd/data/chain/bitcoin/mainnet/channel.backup
+```
+
 ### Installing
 
 ```bash
