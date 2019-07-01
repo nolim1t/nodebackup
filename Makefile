@@ -17,7 +17,7 @@ all:
 	/usr/bin/python3 setup.py bdist_wheel
 
 install:
-	/usr/bin/pip3 install dist/lndnodebackup-0.0.2rc3-py3-none-any.whl
+	/usr/bin/pip3 install dist/lndnodebackup-0.0.2rc4-py3-none-any.whl
 
 uninstall:
 	/usr/bin/pip3 uninstall lndnodebackup
